@@ -1,4 +1,4 @@
-#AVR Source code
+# AVR Source code
 
 This repository contains the source code for various AVR projects of mine. You are free to use
 this code and modify it, as directed by the [MIT license](LICENSE.md).
