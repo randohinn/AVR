@@ -51,7 +51,8 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# Eclipse crap
+# AVR
 
-.metadata
-Debug
+.lss
+.eep
+.lst

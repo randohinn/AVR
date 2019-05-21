@@ -4,19 +4,13 @@
  *  Created on: 19. mai 2019
  *      Author: rando
  */
-
-
+#define F_CPU 8000000
 #include <avr/io.h>
 #include <util/delay.h>
 #include "nrf24l01.h"
-#include <avr/wdt.h>
 
-int main(void)
+int main()
 {
-    wdt_reset();
-    MCUSR=0;
-    WDTCSR|=_BV(WDCE) | _BV(WDE);
-    WDTCSR=0;
     initialize_nrf24l01();
     _delay_ms(200);
     //Enable AA
@@ -31,11 +25,11 @@ int main(void)
     nrf24l01_write_register(RF_SETUP,0x07);
     //Siia tuleb teha aadressi asi
 
-
+	uint8_t data;
     while(1) {
-        uint8_t data = nrf24l01_read_register(STATUS);
-        _delay_ms(1000);
+        data = nrf24l01_read_register(STATUS);
+        //_delay_ms(500);
     }
 
-    return 0;
+    return 1;
 }

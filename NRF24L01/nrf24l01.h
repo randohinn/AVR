@@ -8,8 +8,6 @@
 #ifndef NRF24L01_H_
 #define NRF24L01_H_
 
-#include <avr/interrupt.h>
-#include <util/delay.h>
 
 // The register map of this file is derived from maniacbug (2007 Stefan Engelke <mbox@stefanengelke.de>) - https://github.com/maniacbug/RF24/blob/master/nRF24L01.h also licensed under MIT
 
@@ -160,6 +158,7 @@ void initialize_nrf24l01() {
     PORTB |= (1 << PINB2);
 
     SPCR=(1<<SPE)|(1<<MSTR)|(1<<SPR0);
+	
 }
 
 

@@ -1,0 +1,726 @@
+GAS LISTING C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s 			page 1
+
+
+   1               		.file	"blink.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.section	.debug_abbrev,"",@progbits
+   9               	.Ldebug_abbrev0:
+  10               		.section	.debug_info,"",@progbits
+  11               	.Ldebug_info0:
+  12               		.section	.debug_line,"",@progbits
+  13               	.Ldebug_line0:
+  14               		.text
+  15               	.Ltext0:
+  16               	.global	main
+  17               		.type	main, @function
+  18               	main:
+  19               	.LFB6:
+  20               	.LM1:
+  21               	/* prologue: function */
+  22               	/* frame size = 0 */
+  23               	.LM2:
+  24 0000 82E0      		ldi r24,lo8(2)
+  25 0002 84B9      		out 36-32,r24
+  26               	.LM3:
+  27 0004 62E0      		ldi r22,lo8(2)
+  28               	.LBB12:
+  29               	.LBB13:
+  30               	.LBB14:
+  31               	.LBB15:
+  32               	.LM4:
+  33 0006 49E1      		ldi r20,lo8(25)
+  34 0008 50E0      		ldi r21,hi8(25)
+  35               	.LVL0:
+  36               	.L3:
+  37               	.LBE15:
+  38               	.LBE14:
+  39               	.LBE13:
+  40               	.LBE12:
+  41               	.LM5:
+  42 000a 85B1      		in r24,37-32
+  43               	.LVL1:
+  44 000c 8627      		eor r24,r22
+  45 000e 85B9      		out 37-32,r24
+  46 0010 20E1      		ldi r18,lo8(10000)
+  47 0012 37E2      		ldi r19,hi8(10000)
+  48               	.L2:
+  49               	.LBB19:
+  50               	.LBB18:
+  51               	.LBB17:
+  52               	.LBB16:
+  53               	.LM6:
+  54 0014 CA01      		movw r24,r20
+  55               	.LVL2:
+  56               	/* #APP */
+  57               	 ;  105 "c:/winavr-20100110/lib/gcc/../../avr/include/util/delay_basic.h" 1
+GAS LISTING C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s 			page 2
+
+
+  58 0016 0197      		1: sbiw r24,1
+  59 0018 01F4      		brne 1b
+  60               	 ;  0 "" 2
+  61               	/* #NOAPP */
+  62               	.LBE16:
+  63               	.LBE17:
+  64               	.LM7:
+  65 001a 2150      		subi r18,lo8(-(-1))
+  66 001c 3040      		sbci r19,hi8(-(-1))
+  67               	.LM8:
+  68 001e 01F4      		brne .L2
+  69 0020 00C0      		rjmp .L3
+  70               	.LBE18:
+  71               	.LBE19:
+  72               	.LFE6:
+  73               		.size	main, .-main
+  74               		.section	.debug_frame,"",@progbits
+  75               	.Lframe0:
+  76 0000 0C00 0000 		.long	.LECIE0-.LSCIE0
+  77               	.LSCIE0:
+  78 0004 FFFF FFFF 		.long	0xffffffff
+  79 0008 01        		.byte	0x1
+  80 0009 00        		.string	""
+  81 000a 01        		.uleb128 0x1
+  82 000b 7F        		.sleb128 -1
+  83 000c 24        		.byte	0x24
+  84 000d 0C        		.byte	0xc
+  85 000e 20        		.uleb128 0x20
+  86 000f 00        		.uleb128 0x0
+  87               		.p2align	2
+  88               	.LECIE0:
+  89               	.LSFDE0:
+  90 0010 0C00 0000 		.long	.LEFDE0-.LASFDE0
+  91               	.LASFDE0:
+  92 0014 0000 0000 		.long	.Lframe0
+  93 0018 0000 0000 		.long	.LFB6
+  94 001c 2200 0000 		.long	.LFE6-.LFB6
+  95               		.p2align	2
+  96               	.LEFDE0:
+  97               		.text
+  98               	.Letext0:
+  99               		.section	.debug_loc,"",@progbits
+ 100               	.Ldebug_loc0:
+ 101               	.LLST1:
+ 102 0000 0A00 0000 		.long	.LVL0-.Ltext0
+ 103 0004 0C00 0000 		.long	.LVL1-.Ltext0
+ 104 0008 0600      		.word	0x6
+ 105 000a 68        		.byte	0x68
+ 106 000b 93        		.byte	0x93
+ 107 000c 01        		.uleb128 0x1
+ 108 000d 69        		.byte	0x69
+ 109 000e 93        		.byte	0x93
+ 110 000f 01        		.uleb128 0x1
+ 111 0010 1600 0000 		.long	.LVL2-.Ltext0
+ 112 0014 2200 0000 		.long	.LFE6-.Ltext0
+ 113 0018 0600      		.word	0x6
+ 114 001a 68        		.byte	0x68
+GAS LISTING C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s 			page 3
+
+
+ 115 001b 93        		.byte	0x93
+ 116 001c 01        		.uleb128 0x1
+ 117 001d 69        		.byte	0x69
+ 118 001e 93        		.byte	0x93
+ 119 001f 01        		.uleb128 0x1
+ 120 0020 0000 0000 		.long	0x0
+ 121 0024 0000 0000 		.long	0x0
+ 122               		.section	.debug_info
+ 123 0000 0B01 0000 		.long	0x10b
+ 124 0004 0200      		.word	0x2
+ 125 0006 0000 0000 		.long	.Ldebug_abbrev0
+ 126 000a 04        		.byte	0x4
+ 127 000b 01        		.uleb128 0x1
+ 128 000c 0000 0000 		.long	.LASF14
+ 129 0010 01        		.byte	0x1
+ 130 0011 0000 0000 		.long	.LASF15
+ 131 0015 0000 0000 		.long	.LASF16
+ 132 0019 0000 0000 		.long	.Ltext0
+ 133 001d 0000 0000 		.long	.Letext0
+ 134 0021 0000 0000 		.long	.Ldebug_line0
+ 135 0025 02        		.uleb128 0x2
+ 136 0026 01        		.byte	0x1
+ 137 0027 06        		.byte	0x6
+ 138 0028 0000 0000 		.long	.LASF0
+ 139 002c 02        		.uleb128 0x2
+ 140 002d 01        		.byte	0x1
+ 141 002e 08        		.byte	0x8
+ 142 002f 0000 0000 		.long	.LASF1
+ 143 0033 03        		.uleb128 0x3
+ 144 0034 02        		.byte	0x2
+ 145 0035 05        		.byte	0x5
+ 146 0036 696E 7400 		.string	"int"
+ 147 003a 04        		.uleb128 0x4
+ 148 003b 0000 0000 		.long	.LASF17
+ 149 003f 04        		.byte	0x4
+ 150 0040 7C        		.byte	0x7c
+ 151 0041 4500 0000 		.long	0x45
+ 152 0045 02        		.uleb128 0x2
+ 153 0046 02        		.byte	0x2
+ 154 0047 07        		.byte	0x7
+ 155 0048 0000 0000 		.long	.LASF2
+ 156 004c 02        		.uleb128 0x2
+ 157 004d 04        		.byte	0x4
+ 158 004e 05        		.byte	0x5
+ 159 004f 0000 0000 		.long	.LASF3
+ 160 0053 02        		.uleb128 0x2
+ 161 0054 04        		.byte	0x4
+ 162 0055 07        		.byte	0x7
+ 163 0056 0000 0000 		.long	.LASF4
+ 164 005a 02        		.uleb128 0x2
+ 165 005b 08        		.byte	0x8
+ 166 005c 05        		.byte	0x5
+ 167 005d 0000 0000 		.long	.LASF5
+ 168 0061 02        		.uleb128 0x2
+ 169 0062 08        		.byte	0x8
+ 170 0063 07        		.byte	0x7
+ 171 0064 0000 0000 		.long	.LASF6
+GAS LISTING C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s 			page 4
+
+
+ 172 0068 05        		.uleb128 0x5
+ 173 0069 0000 0000 		.long	.LASF7
+ 174 006d 02        		.byte	0x2
+ 175 006e 68        		.byte	0x68
+ 176 006f 01        		.byte	0x1
+ 177 0070 03        		.byte	0x3
+ 178 0071 8100 0000 		.long	0x81
+ 179 0075 06        		.uleb128 0x6
+ 180 0076 0000 0000 		.long	.LASF9
+ 181 007a 02        		.byte	0x2
+ 182 007b 67        		.byte	0x67
+ 183 007c 3A00 0000 		.long	0x3a
+ 184 0080 00        		.byte	0x0
+ 185 0081 05        		.uleb128 0x5
+ 186 0082 0000 0000 		.long	.LASF8
+ 187 0086 03        		.byte	0x3
+ 188 0087 6F        		.byte	0x6f
+ 189 0088 01        		.byte	0x1
+ 190 0089 03        		.byte	0x3
+ 191 008a B200 0000 		.long	0xb2
+ 192 008e 06        		.uleb128 0x6
+ 193 008f 0000 0000 		.long	.LASF10
+ 194 0093 03        		.byte	0x3
+ 195 0094 6E        		.byte	0x6e
+ 196 0095 B200 0000 		.long	0xb2
+ 197 0099 07        		.uleb128 0x7
+ 198 009a 0000 0000 		.long	.LASF11
+ 199 009e 03        		.byte	0x3
+ 200 009f 70        		.byte	0x70
+ 201 00a0 3A00 0000 		.long	0x3a
+ 202 00a4 07        		.uleb128 0x7
+ 203 00a5 0000 0000 		.long	.LASF12
+ 204 00a9 03        		.byte	0x3
+ 205 00aa 71        		.byte	0x71
+ 206 00ab B200 0000 		.long	0xb2
+ 207 00af 08        		.uleb128 0x8
+ 208 00b0 08        		.uleb128 0x8
+ 209 00b1 00        		.byte	0x0
+ 210 00b2 02        		.uleb128 0x2
+ 211 00b3 04        		.byte	0x4
+ 212 00b4 04        		.byte	0x4
+ 213 00b5 0000 0000 		.long	.LASF13
+ 214 00b9 09        		.uleb128 0x9
+ 215 00ba 01        		.byte	0x1
+ 216 00bb 0000 0000 		.long	.LASF18
+ 217 00bf 01        		.byte	0x1
+ 218 00c0 0C        		.byte	0xc
+ 219 00c1 3300 0000 		.long	0x33
+ 220 00c5 0000 0000 		.long	.LFB6
+ 221 00c9 0000 0000 		.long	.LFE6
+ 222 00cd 02        		.byte	0x2
+ 223 00ce 90        		.byte	0x90
+ 224 00cf 20        		.uleb128 0x20
+ 225 00d0 0A        		.uleb128 0xa
+ 226 00d1 8100 0000 		.long	0x81
+ 227 00d5 0000 0000 		.long	.Ldebug_ranges0+0x0
+ 228 00d9 01        		.byte	0x1
+GAS LISTING C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s 			page 5
+
+
+ 229 00da 10        		.byte	0x10
+ 230 00db 0B        		.uleb128 0xb
+ 231 00dc 8E00 0000 		.long	0x8e
+ 232 00e0 0C        		.uleb128 0xc
+ 233 00e1 0000 0000 		.long	.Ldebug_ranges0+0x18
+ 234 00e5 0D        		.uleb128 0xd
+ 235 00e6 9900 0000 		.long	0x99
+ 236 00ea 06        		.byte	0x6
+ 237 00eb 62        		.byte	0x62
+ 238 00ec 93        		.byte	0x93
+ 239 00ed 01        		.uleb128 0x1
+ 240 00ee 63        		.byte	0x63
+ 241 00ef 93        		.byte	0x93
+ 242 00f0 01        		.uleb128 0x1
+ 243 00f1 0E        		.uleb128 0xe
+ 244 00f2 A400 0000 		.long	0xa4
+ 245 00f6 0A        		.uleb128 0xa
+ 246 00f7 6800 0000 		.long	0x68
+ 247 00fb 0000 0000 		.long	.Ldebug_ranges0+0x30
+ 248 00ff 03        		.byte	0x3
+ 249 0100 7B        		.byte	0x7b
+ 250 0101 0F        		.uleb128 0xf
+ 251 0102 7500 0000 		.long	0x75
+ 252 0106 0000 0000 		.long	.LLST1
+ 253 010a 00        		.byte	0x0
+ 254 010b 00        		.byte	0x0
+ 255 010c 00        		.byte	0x0
+ 256 010d 00        		.byte	0x0
+ 257 010e 00        		.byte	0x0
+ 258               		.section	.debug_abbrev
+ 259 0000 01        		.uleb128 0x1
+ 260 0001 11        		.uleb128 0x11
+ 261 0002 01        		.byte	0x1
+ 262 0003 25        		.uleb128 0x25
+ 263 0004 0E        		.uleb128 0xe
+ 264 0005 13        		.uleb128 0x13
+ 265 0006 0B        		.uleb128 0xb
+ 266 0007 03        		.uleb128 0x3
+ 267 0008 0E        		.uleb128 0xe
+ 268 0009 1B        		.uleb128 0x1b
+ 269 000a 0E        		.uleb128 0xe
+ 270 000b 11        		.uleb128 0x11
+ 271 000c 01        		.uleb128 0x1
+ 272 000d 12        		.uleb128 0x12
+ 273 000e 01        		.uleb128 0x1
+ 274 000f 10        		.uleb128 0x10
+ 275 0010 06        		.uleb128 0x6
+ 276 0011 00        		.byte	0x0
+ 277 0012 00        		.byte	0x0
+ 278 0013 02        		.uleb128 0x2
+ 279 0014 24        		.uleb128 0x24
+ 280 0015 00        		.byte	0x0
+ 281 0016 0B        		.uleb128 0xb
+ 282 0017 0B        		.uleb128 0xb
+ 283 0018 3E        		.uleb128 0x3e
+ 284 0019 0B        		.uleb128 0xb
+ 285 001a 03        		.uleb128 0x3
+GAS LISTING C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s 			page 6
+
+
+ 286 001b 0E        		.uleb128 0xe
+ 287 001c 00        		.byte	0x0
+ 288 001d 00        		.byte	0x0
+ 289 001e 03        		.uleb128 0x3
+ 290 001f 24        		.uleb128 0x24
+ 291 0020 00        		.byte	0x0
+ 292 0021 0B        		.uleb128 0xb
+ 293 0022 0B        		.uleb128 0xb
+ 294 0023 3E        		.uleb128 0x3e
+ 295 0024 0B        		.uleb128 0xb
+ 296 0025 03        		.uleb128 0x3
+ 297 0026 08        		.uleb128 0x8
+ 298 0027 00        		.byte	0x0
+ 299 0028 00        		.byte	0x0
+ 300 0029 04        		.uleb128 0x4
+ 301 002a 16        		.uleb128 0x16
+ 302 002b 00        		.byte	0x0
+ 303 002c 03        		.uleb128 0x3
+ 304 002d 0E        		.uleb128 0xe
+ 305 002e 3A        		.uleb128 0x3a
+ 306 002f 0B        		.uleb128 0xb
+ 307 0030 3B        		.uleb128 0x3b
+ 308 0031 0B        		.uleb128 0xb
+ 309 0032 49        		.uleb128 0x49
+ 310 0033 13        		.uleb128 0x13
+ 311 0034 00        		.byte	0x0
+ 312 0035 00        		.byte	0x0
+ 313 0036 05        		.uleb128 0x5
+ 314 0037 2E        		.uleb128 0x2e
+ 315 0038 01        		.byte	0x1
+ 316 0039 03        		.uleb128 0x3
+ 317 003a 0E        		.uleb128 0xe
+ 318 003b 3A        		.uleb128 0x3a
+ 319 003c 0B        		.uleb128 0xb
+ 320 003d 3B        		.uleb128 0x3b
+ 321 003e 0B        		.uleb128 0xb
+ 322 003f 27        		.uleb128 0x27
+ 323 0040 0C        		.uleb128 0xc
+ 324 0041 20        		.uleb128 0x20
+ 325 0042 0B        		.uleb128 0xb
+ 326 0043 01        		.uleb128 0x1
+ 327 0044 13        		.uleb128 0x13
+ 328 0045 00        		.byte	0x0
+ 329 0046 00        		.byte	0x0
+ 330 0047 06        		.uleb128 0x6
+ 331 0048 05        		.uleb128 0x5
+ 332 0049 00        		.byte	0x0
+ 333 004a 03        		.uleb128 0x3
+ 334 004b 0E        		.uleb128 0xe
+ 335 004c 3A        		.uleb128 0x3a
+ 336 004d 0B        		.uleb128 0xb
+ 337 004e 3B        		.uleb128 0x3b
+ 338 004f 0B        		.uleb128 0xb
+ 339 0050 49        		.uleb128 0x49
+ 340 0051 13        		.uleb128 0x13
+ 341 0052 00        		.byte	0x0
+ 342 0053 00        		.byte	0x0
+GAS LISTING C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s 			page 7
+
+
+ 343 0054 07        		.uleb128 0x7
+ 344 0055 34        		.uleb128 0x34
+ 345 0056 00        		.byte	0x0
+ 346 0057 03        		.uleb128 0x3
+ 347 0058 0E        		.uleb128 0xe
+ 348 0059 3A        		.uleb128 0x3a
+ 349 005a 0B        		.uleb128 0xb
+ 350 005b 3B        		.uleb128 0x3b
+ 351 005c 0B        		.uleb128 0xb
+ 352 005d 49        		.uleb128 0x49
+ 353 005e 13        		.uleb128 0x13
+ 354 005f 00        		.byte	0x0
+ 355 0060 00        		.byte	0x0
+ 356 0061 08        		.uleb128 0x8
+ 357 0062 0B        		.uleb128 0xb
+ 358 0063 00        		.byte	0x0
+ 359 0064 00        		.byte	0x0
+ 360 0065 00        		.byte	0x0
+ 361 0066 09        		.uleb128 0x9
+ 362 0067 2E        		.uleb128 0x2e
+ 363 0068 01        		.byte	0x1
+ 364 0069 3F        		.uleb128 0x3f
+ 365 006a 0C        		.uleb128 0xc
+ 366 006b 03        		.uleb128 0x3
+ 367 006c 0E        		.uleb128 0xe
+ 368 006d 3A        		.uleb128 0x3a
+ 369 006e 0B        		.uleb128 0xb
+ 370 006f 3B        		.uleb128 0x3b
+ 371 0070 0B        		.uleb128 0xb
+ 372 0071 49        		.uleb128 0x49
+ 373 0072 13        		.uleb128 0x13
+ 374 0073 11        		.uleb128 0x11
+ 375 0074 01        		.uleb128 0x1
+ 376 0075 12        		.uleb128 0x12
+ 377 0076 01        		.uleb128 0x1
+ 378 0077 40        		.uleb128 0x40
+ 379 0078 0A        		.uleb128 0xa
+ 380 0079 00        		.byte	0x0
+ 381 007a 00        		.byte	0x0
+ 382 007b 0A        		.uleb128 0xa
+ 383 007c 1D        		.uleb128 0x1d
+ 384 007d 01        		.byte	0x1
+ 385 007e 31        		.uleb128 0x31
+ 386 007f 13        		.uleb128 0x13
+ 387 0080 55        		.uleb128 0x55
+ 388 0081 06        		.uleb128 0x6
+ 389 0082 58        		.uleb128 0x58
+ 390 0083 0B        		.uleb128 0xb
+ 391 0084 59        		.uleb128 0x59
+ 392 0085 0B        		.uleb128 0xb
+ 393 0086 00        		.byte	0x0
+ 394 0087 00        		.byte	0x0
+ 395 0088 0B        		.uleb128 0xb
+ 396 0089 05        		.uleb128 0x5
+ 397 008a 00        		.byte	0x0
+ 398 008b 31        		.uleb128 0x31
+ 399 008c 13        		.uleb128 0x13
+GAS LISTING C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s 			page 8
+
+
+ 400 008d 00        		.byte	0x0
+ 401 008e 00        		.byte	0x0
+ 402 008f 0C        		.uleb128 0xc
+ 403 0090 0B        		.uleb128 0xb
+ 404 0091 01        		.byte	0x1
+ 405 0092 55        		.uleb128 0x55
+ 406 0093 06        		.uleb128 0x6
+ 407 0094 00        		.byte	0x0
+ 408 0095 00        		.byte	0x0
+ 409 0096 0D        		.uleb128 0xd
+ 410 0097 34        		.uleb128 0x34
+ 411 0098 00        		.byte	0x0
+ 412 0099 31        		.uleb128 0x31
+ 413 009a 13        		.uleb128 0x13
+ 414 009b 02        		.uleb128 0x2
+ 415 009c 0A        		.uleb128 0xa
+ 416 009d 00        		.byte	0x0
+ 417 009e 00        		.byte	0x0
+ 418 009f 0E        		.uleb128 0xe
+ 419 00a0 34        		.uleb128 0x34
+ 420 00a1 00        		.byte	0x0
+ 421 00a2 31        		.uleb128 0x31
+ 422 00a3 13        		.uleb128 0x13
+ 423 00a4 00        		.byte	0x0
+ 424 00a5 00        		.byte	0x0
+ 425 00a6 0F        		.uleb128 0xf
+ 426 00a7 05        		.uleb128 0x5
+ 427 00a8 00        		.byte	0x0
+ 428 00a9 31        		.uleb128 0x31
+ 429 00aa 13        		.uleb128 0x13
+ 430 00ab 02        		.uleb128 0x2
+ 431 00ac 06        		.uleb128 0x6
+ 432 00ad 00        		.byte	0x0
+ 433 00ae 00        		.byte	0x0
+ 434 00af 00        		.byte	0x0
+ 435               		.section	.debug_pubnames,"",@progbits
+ 436 0000 1700 0000 		.long	0x17
+ 437 0004 0200      		.word	0x2
+ 438 0006 0000 0000 		.long	.Ldebug_info0
+ 439 000a 0F01 0000 		.long	0x10f
+ 440 000e B900 0000 		.long	0xb9
+ 441 0012 6D61 696E 		.string	"main"
+ 441      00
+ 442 0017 0000 0000 		.long	0x0
+ 443               		.section	.debug_aranges,"",@progbits
+ 444 0000 1C00 0000 		.long	0x1c
+ 445 0004 0200      		.word	0x2
+ 446 0006 0000 0000 		.long	.Ldebug_info0
+ 447 000a 04        		.byte	0x4
+ 448 000b 00        		.byte	0x0
+ 449 000c 0000      		.word	0x0
+ 450 000e 0000      		.word	0x0
+ 451 0010 0000 0000 		.long	.Ltext0
+ 452 0014 2200 0000 		.long	.Letext0-.Ltext0
+ 453 0018 0000 0000 		.long	0x0
+ 454 001c 0000 0000 		.long	0x0
+ 455               		.section	.debug_ranges,"",@progbits
+GAS LISTING C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s 			page 9
+
+
+ 456               	.Ldebug_ranges0:
+ 457 0000 0600 0000 		.long	.LBB12-.Ltext0
+ 458 0004 0A00 0000 		.long	.LBE12-.Ltext0
+ 459 0008 1400 0000 		.long	.LBB19-.Ltext0
+ 460 000c 2200 0000 		.long	.LBE19-.Ltext0
+ 461 0010 0000 0000 		.long	0x0
+ 462 0014 0000 0000 		.long	0x0
+ 463 0018 0600 0000 		.long	.LBB13-.Ltext0
+ 464 001c 0A00 0000 		.long	.LBE13-.Ltext0
+ 465 0020 1400 0000 		.long	.LBB18-.Ltext0
+ 466 0024 2200 0000 		.long	.LBE18-.Ltext0
+ 467 0028 0000 0000 		.long	0x0
+ 468 002c 0000 0000 		.long	0x0
+ 469 0030 0600 0000 		.long	.LBB14-.Ltext0
+ 470 0034 0A00 0000 		.long	.LBE14-.Ltext0
+ 471 0038 1400 0000 		.long	.LBB17-.Ltext0
+ 472 003c 1A00 0000 		.long	.LBE17-.Ltext0
+ 473 0040 0000 0000 		.long	0x0
+ 474 0044 0000 0000 		.long	0x0
+ 475               		.section	.debug_line
+ 476 0000 0701 0000 		.long	.LELT0-.LSLT0
+ 477               	.LSLT0:
+ 478 0004 0200      		.word	0x2
+ 479 0006 AC00 0000 		.long	.LELTP0-.LASLTP0
+ 480               	.LASLTP0:
+ 481 000a 01        		.byte	0x1
+ 482 000b 01        		.byte	0x1
+ 483 000c F6        		.byte	0xf6
+ 484 000d F5        		.byte	0xf5
+ 485 000e 0A        		.byte	0xa
+ 486 000f 00        		.byte	0x0
+ 487 0010 01        		.byte	0x1
+ 488 0011 01        		.byte	0x1
+ 489 0012 01        		.byte	0x1
+ 490 0013 01        		.byte	0x1
+ 491 0014 00        		.byte	0x0
+ 492 0015 00        		.byte	0x0
+ 493 0016 00        		.byte	0x0
+ 494 0017 01        		.byte	0x1
+ 495 0018 633A 2F77 		.ascii	"c:/winavr-20100110/lib/gcc/../../avr/include"
+ 495      696E 6176 
+ 495      722D 3230 
+ 495      3130 3031 
+ 495      3130 2F6C 
+ 496 0044 00        		.byte	0
+ 497 0045 633A 2F77 		.ascii	"c:/winavr-20100110/lib/gcc/../../avr/include/util"
+ 497      696E 6176 
+ 497      722D 3230 
+ 497      3130 3031 
+ 497      3130 2F6C 
+ 498 0076 00        		.byte	0
+ 499 0077 00        		.byte	0x0
+ 500 0078 626C 696E 		.string	"blink.c"
+ 500      6B2E 6300 
+ 501 0080 00        		.uleb128 0x0
+ 502 0081 00        		.uleb128 0x0
+ 503 0082 00        		.uleb128 0x0
+GAS LISTING C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s 			page 10
+
+
+ 504 0083 7574 696C 		.string	"util/delay_basic.h"
+ 504      2F64 656C 
+ 504      6179 5F62 
+ 504      6173 6963 
+ 504      2E68 00
+ 505 0096 01        		.uleb128 0x1
+ 506 0097 00        		.uleb128 0x0
+ 507 0098 00        		.uleb128 0x0
+ 508 0099 7574 696C 		.string	"util/delay.h"
+ 508      2F64 656C 
+ 508      6179 2E68 
+ 508      00
+ 509 00a6 01        		.uleb128 0x1
+ 510 00a7 00        		.uleb128 0x0
+ 511 00a8 00        		.uleb128 0x0
+ 512 00a9 7374 6469 		.string	"stdint.h"
+ 512      6E74 2E68 
+ 512      00
+ 513 00b2 01        		.uleb128 0x1
+ 514 00b3 00        		.uleb128 0x0
+ 515 00b4 00        		.uleb128 0x0
+ 516 00b5 00        		.byte	0x0
+ 517               	.LELTP0:
+ 518 00b6 00        		.byte	0x0
+ 519 00b7 05        		.uleb128 0x5
+ 520 00b8 02        		.byte	0x2
+ 521 00b9 0000 0000 		.long	.LM1
+ 522 00bd 1F        		.byte	0x1f
+ 523 00be 00        		.byte	0x0
+ 524 00bf 05        		.uleb128 0x5
+ 525 00c0 02        		.byte	0x2
+ 526 00c1 0000 0000 		.long	.LM2
+ 527 00c5 15        		.byte	0x15
+ 528 00c6 00        		.byte	0x0
+ 529 00c7 05        		.uleb128 0x5
+ 530 00c8 02        		.byte	0x2
+ 531 00c9 0000 0000 		.long	.LM3
+ 532 00cd 16        		.byte	0x16
+ 533 00ce 00        		.byte	0x0
+ 534 00cf 05        		.uleb128 0x5
+ 535 00d0 02        		.byte	0x2
+ 536 00d1 0000 0000 		.long	.LM4
+ 537 00d5 04        		.byte	0x4
+ 538 00d6 02        		.uleb128 0x2
+ 539 00d7 6E        		.byte	0x6e
+ 540 00d8 00        		.byte	0x0
+ 541 00d9 05        		.uleb128 0x5
+ 542 00da 02        		.byte	0x2
+ 543 00db 0000 0000 		.long	.LM5
+ 544 00df 04        		.byte	0x4
+ 545 00e0 01        		.uleb128 0x1
+ 546 00e1 03        		.byte	0x3
+ 547 00e2 A67F      		.sleb128 -90
+ 548 00e4 01        		.byte	0x1
+ 549 00e5 00        		.byte	0x0
+ 550 00e6 05        		.uleb128 0x5
+ 551 00e7 02        		.byte	0x2
+GAS LISTING C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s 			page 11
+
+
+ 552 00e8 0000 0000 		.long	.LM6
+ 553 00ec 04        		.byte	0x4
+ 554 00ed 02        		.uleb128 0x2
+ 555 00ee 6E        		.byte	0x6e
+ 556 00ef 00        		.byte	0x0
+ 557 00f0 05        		.uleb128 0x5
+ 558 00f1 02        		.byte	0x2
+ 559 00f2 0000 0000 		.long	.LM7
+ 560 00f6 04        		.byte	0x4
+ 561 00f7 03        		.uleb128 0x3
+ 562 00f8 27        		.byte	0x27
+ 563 00f9 00        		.byte	0x0
+ 564 00fa 05        		.uleb128 0x5
+ 565 00fb 02        		.byte	0x2
+ 566 00fc 0000 0000 		.long	.LM8
+ 567 0100 10        		.byte	0x10
+ 568 0101 00        		.byte	0x0
+ 569 0102 05        		.uleb128 0x5
+ 570 0103 02        		.byte	0x2
+ 571 0104 0000 0000 		.long	.Letext0
+ 572 0108 00        		.byte	0x0
+ 573 0109 01        		.uleb128 0x1
+ 574 010a 01        		.byte	0x1
+ 575               	.LELT0:
+ 576 010b 1600 0000 		.section	.debug_str,"MS",@progbits,1
+ 576      0200 1000 
+ 576      0000 01
+ 577               	.LASF15:
+ 578 0000 626C 696E 		.string	"blink.c"
+ 578      6B2E 6300 
+ 579               	.LASF1:
+ 580 0008 756E 7369 		.string	"unsigned char"
+ 580      676E 6564 
+ 580      2063 6861 
+ 580      7200 
+ 581               	.LASF7:
+ 582 0016 5F64 656C 		.string	"_delay_loop_2"
+ 582      6179 5F6C 
+ 582      6F6F 705F 
+ 582      3200 
+ 583               	.LASF4:
+ 584 0024 6C6F 6E67 		.string	"long unsigned int"
+ 584      2075 6E73 
+ 584      6967 6E65 
+ 584      6420 696E 
+ 584      7400 
+ 585               	.LASF8:
+ 586 0036 5F64 656C 		.string	"_delay_ms"
+ 586      6179 5F6D 
+ 586      7300 
+ 587               	.LASF14:
+ 588 0040 474E 5520 		.string	"GNU C 4.3.3"
+ 588      4320 342E 
+ 588      332E 3300 
+ 589               	.LASF13:
+ 590 004c 646F 7562 		.string	"double"
+ 590      6C65 00
+GAS LISTING C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s 			page 12
+
+
+ 591               	.LASF12:
+ 592 0053 5F5F 746D 		.string	"__tmp"
+ 592      7000 
+ 593               	.LASF18:
+ 594 0059 6D61 696E 		.string	"main"
+ 594      00
+ 595               	.LASF2:
+ 596 005e 756E 7369 		.string	"unsigned int"
+ 596      676E 6564 
+ 596      2069 6E74 
+ 596      00
+ 597               	.LASF6:
+ 598 006b 6C6F 6E67 		.string	"long long unsigned int"
+ 598      206C 6F6E 
+ 598      6720 756E 
+ 598      7369 676E 
+ 598      6564 2069 
+ 599               	.LASF16:
+ 600 0082 433A 5C55 		.string	"C:\\Users\\rando\\Documents\\AVR\\Blink2"
+ 600      7365 7273 
+ 600      5C72 616E 
+ 600      646F 5C44 
+ 600      6F63 756D 
+ 601               	.LASF5:
+ 602 00a6 6C6F 6E67 		.string	"long long int"
+ 602      206C 6F6E 
+ 602      6720 696E 
+ 602      7400 
+ 603               	.LASF9:
+ 604 00b4 5F5F 636F 		.string	"__count"
+ 604      756E 7400 
+ 605               	.LASF17:
+ 606 00bc 7569 6E74 		.string	"uint16_t"
+ 606      3136 5F74 
+ 606      00
+ 607               	.LASF11:
+ 608 00c5 5F5F 7469 		.string	"__ticks"
+ 608      636B 7300 
+ 609               	.LASF3:
+ 610 00cd 6C6F 6E67 		.string	"long int"
+ 610      2069 6E74 
+ 610      00
+ 611               	.LASF0:
+ 612 00d6 7369 676E 		.string	"signed char"
+ 612      6564 2063 
+ 612      6861 7200 
+ 613               	.LASF10:
+ 614 00e2 5F5F 6D73 		.string	"__ms"
+ 614      00
+GAS LISTING C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 blink.c
+C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s:2      *ABS*:0000003f __SREG__
+C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s:3      *ABS*:0000003e __SP_H__
+C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s:4      *ABS*:0000003d __SP_L__
+C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s:5      *ABS*:00000034 __CCP__
+C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\rando\AppData\Local\Temp/ccrKsMhu.s:18     .text:00000000 main
+
+NO UNDEFINED SYMBOLS
