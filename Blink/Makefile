@@ -15,6 +15,8 @@
 # MCU name
 MCU = atmega48
 
+AVRDUDEMCU = m48
+
 # Output format. (can be srec, ihex)
 FORMAT = ihex
 
@@ -237,7 +239,9 @@ writeflash:
 # write BODLEVEL
 # enable BOD
 writefuse:
-	avrdude -p m48 -U lfuse:w:0xe3:m
-	avrdude -p m48 -U hfuse:w:0xdd:m
-	avrdude -p m48 -U lfuse:w:0xc3:m
+	avrdude -p $(AVRDUDEMCU) -U lfuse:w:0xe3:m
+	avrdude -p $(AVRDUDEMCU) -U hfuse:w:0xdd:m
+	avrdude -p $(AVRDUDEMCU) -U lfuse:w:0xc3:m
 
+program:
+	avrdude -c usbtiny -p $(AVRDUDEMCU) -U flash:w:$(TARGET).hex
