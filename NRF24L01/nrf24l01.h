@@ -115,6 +115,10 @@
 #define RF_PWR_HIGH 2
 
 
+/* shorter modes for the comms function */
+#define W 1
+#define R 0
+
 uint8_t send_recieve_spi_byte(uint8_t data)
 {
 	// Load data into the buffer
@@ -150,12 +154,64 @@ void nrf24l01_write_register(uint8_t reg, uint8_t data) {
 }
 
 
+uint8_t* nrf24l01_communicate(uint8_t mode, uint8_t reg, uint8_t* package, uint8_t byte_count) {
+	if(mode == W) {
+		reg = W_REGISTER + reg; 
+	} else {
+		reg = R_REGISTER + reg;
+	}
+	
+	static uint8_t ret[32];
+	
+	_delay_us(10);
+	PORTB &= ~(1 << PINB2);
+	_delay_us(10);
+	send_recieve_spi_byte(reg);
+	_delay_us(10);
+	
+	int i;
+	for(i = 0; i < byte_count; i++) {
+		if(mode == R && reg != W_TX_PAYLOAD) { // payload is on top level, uses R mode!
+			ret[i] = send_recieve_spi_byte(NOP); // Loeme välja 
+			_delay_us(10);
+		} else {
+			send_recieve_spi_byte(package[i]);
+			_delay_us(10);
+		}
+	}
+	PORTB |= (1 << PINB2);
+	return ret;
+	
+}
+
+void nrf24l01_transmit(uint8_t* payload) {
+	nrf24l01_communicate(R, FLUSH_TX, payload, 0);
+	nrf24l01_communicate(R, W_TX_PAYLOAD, payload, 1);
+	_delay_ms(10);
+	PORTB |= (1 << PINB1);
+	_delay_us(20);
+	PORTB &= ~(1 << PINB1);
+	_delay_ms(10);
+}
+
+void nrf24l01_reset() {
+	_delay_us(10);
+	PORTB &= ~(1 << PINB2);
+	_delay_us(10);
+	uint8_t val[1];
+	val[0] = 0x70;
+	nrf24l01_communicate(W, STATUS, val, 1);
+	PORTB |= (1 << PINB1);
+
+}
+
 void initialize_nrf24l01() {
     //ce csn
     DDRB = (1 << DDB1) | (1 << DDB2) | (1 << DDB3) | (1 << DDB5);
 
-    //CSN K�rgeks
+    //CSN Kõrgeks
     PORTB |= (1 << PINB2);
+	PORTB &= ~(1 << PINB1);
 
     SPCR=(1<<SPE)|(1<<MSTR)|(1<<SPR0);
 	

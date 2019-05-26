@@ -53,6 +53,6 @@ dkms.conf
 
 # AVR
 
-.lss
-.eep
-.lst
+*.lss
+*.eep
+*.lst
