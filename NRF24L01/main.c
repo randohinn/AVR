@@ -60,6 +60,7 @@ int main()
     while(1) {
 		nrf24l01_transmit(data);
 		nrf24l01_reset();
+		_delay_ms(100);
     }
 
     return 1;

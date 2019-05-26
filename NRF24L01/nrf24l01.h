@@ -130,29 +130,6 @@ uint8_t send_recieve_spi_byte(uint8_t data)
 	return(SPDR);
 }
 
-uint8_t nrf24l01_read_register(uint8_t reg) {
-    _delay_us(10);
-    PORTB &= ~(1 << PINB2);
-    _delay_us(10);
-    send_recieve_spi_byte(R_REGISTER+reg);
-    _delay_us(10);
-    reg = send_recieve_spi_byte(NOP);
-    _delay_us(10);
-    PORTB |= (1 << PINB2);
-    return reg;
-}
-
-void nrf24l01_write_register(uint8_t reg, uint8_t data) {
-    _delay_us(10);
-    PORTB &= ~(1 << PINB2);
-    _delay_us(10);
-    send_recieve_spi_byte(W_REGISTER+reg);
-    _delay_us(10);
-    send_recieve_spi_byte(data);
-    _delay_us(10);
-    PORTB |= (1 << PINB2);
-}
-
 
 uint8_t* nrf24l01_communicate(uint8_t mode, uint8_t reg, uint8_t* package, uint8_t byte_count) {
 	if(mode == W) {
