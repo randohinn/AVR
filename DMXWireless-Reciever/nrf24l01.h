@@ -161,9 +161,9 @@ uint8_t* nrf24l01_communicate(uint8_t mode, uint8_t reg, uint8_t* package, uint8
 	
 }
 
-void nrf24l01_transmit(uint8_t* payload) {
+void nrf24l01_transmit(uint8_t* payload, uint8_t count) {
 	nrf24l01_communicate(R, FLUSH_TX, payload, 0);
-	nrf24l01_communicate(R, W_TX_PAYLOAD, payload, 1);
+	nrf24l01_communicate(R, W_TX_PAYLOAD, payload, count);
 	_delay_ms(10);
 	PORTB |= (1 << PINB1);
 	_delay_us(20);

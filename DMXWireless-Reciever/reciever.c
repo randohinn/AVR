@@ -1,13 +1,13 @@
-/*
- * main.c
- *
- *  Created on: 19. mai 2019
- *      Author: rando
- */
 #define F_CPU 8000000
 #include <avr/io.h>
+#include <avr/interrupt.h>
+
 #include <util/delay.h>
 #include "nrf24l01.h"
+
+ISR(INT0_VECT) {
+
+}
 
 int main()
 {
@@ -46,28 +46,29 @@ int main()
 	nrf24l01_communicate(W, RX_ADDR_P0, val, 5);	
 	nrf24l01_communicate(W, TX_ADDR, val, 5);	
 	
+	val[0] = 32;
 	// Payload width (how many bytes per package) 1-32
-	val[0] = 1;
 	nrf24l01_communicate(W, RX_PW_P0, val, 1);
-	
-	
-	
-	// Config - UNCOMMENT FOR TRANSMITTER
-	//val[0] = 0x1E; //0b0001 1110 bit 0 = 0/1 transmitter/reciever bit 1 powerup , bit4 if 1 = mask_max_RT = irq not triggered if failed transmit
-	//nrf24l01_communicate(W, CONFIG, val, 1);
 	
 	val[0] = 0x1F;
 	nrf24l01_communicate(W, CONFIG, val, 1);
 	_delay_ms(100);
 	
 	uint8_t* data;
+	
+	
+	DDRD &= ~(1<<DDD2);
+	EICRA |= (1<<ISC01);
+	sei();
 	//data[0] = 0x01;
     while(1) {
 	/*	nrf24l01_transmit(data);
 		nrf24l01_reset();
 		_delay_ms(100);*/
-		data = nrf24l01_recieve(1);
+		data = nrf24l01_recieve(32);
 		nrf24l01_reset();
+		
+
     }
 
     return 1;
