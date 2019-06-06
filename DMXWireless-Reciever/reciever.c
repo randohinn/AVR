@@ -4,9 +4,39 @@
 
 #include <util/delay.h>
 #include "nrf24l01.h"
+volatile uint8_t* data;
+#include <string.h>
 
-ISR(INT0_VECT) {
+volatile unsigned char dmx_buffer[512];
 
+ISR(INT0_vect) {
+	data = nrf24l01_recieve(32);
+	nrf24l01_reset();
+	/*int i;
+	for(i = 0; i < 32; i++) {
+		dmx_buffer[0] = 255;
+	}*/
+	dmx_buffer[0] = 255;
+	
+}
+
+void serial_send(char* ar) {
+	int i;
+	for (i = 0; i < strlen(ar); i++){
+		while (( UCSR0A & (1<<UDRE0))  == 0){};
+		_delay_ms(1);
+		UDR0 = ar[i];
+	}
+}
+
+void init_uart() {
+	DDRD |= (1 << PIND1);
+	DDRD &= ~(1 << PIND0);
+	UCSR0B |= (1 << TXEN0) | (1 << RXEN0);   // Turn on the transmission and reception circuitry
+	UCSR0C |= (1 << UCSZ00) | (1 << UCSZ01); // Use 8-bit character sizes
+
+	UBRR0H = 0;
+	UBRR0L=54;
 }
 
 int main()
@@ -52,23 +82,28 @@ int main()
 	
 	val[0] = 0x1F;
 	nrf24l01_communicate(W, CONFIG, val, 1);
-	_delay_ms(100);
+	_delay_ms(100);	
 	
-	uint8_t* data;
+	DDRD &= ~(1 << DDD2);
+	DDRC |= (1 << DDC5);
+	EICRA &=  ~(1<<ISC01) | (1<<ISC00);
+	EIMSK |= (1<< INT0);
+	//init_uart();
 	
-	
-	DDRD &= ~(1<<DDD2);
-	EICRA |= (1<<ISC01);
 	sei();
-	//data[0] = 0x01;
+	
     while(1) {
 	/*	nrf24l01_transmit(data);
 		nrf24l01_reset();
-		_delay_ms(100);*/
-		data = nrf24l01_recieve(32);
-		nrf24l01_reset();
-		
-
+		_delay_ms(100);
+		uint16_t i;
+		for(i = 0; i < 512; i++) {
+			char buffer[8 * sizeof (uint8_t) + 1 ];
+			utoa(dmx_buffer[0], buffer, 10);
+			serial_send(buffer);
+			//_delay_ms(10);
+			serial_send("\r\n");
+		}*/
     }
 
     return 1;

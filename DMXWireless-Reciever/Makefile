@@ -13,9 +13,9 @@
 
 
 # MCU name
-MCU = atmega48
+MCU = atmega328
 
-AVRDUDEMCU = m48
+AVRDUDEMCU = m328
 
 # Output format. (can be srec, ihex)
 FORMAT = ihex
