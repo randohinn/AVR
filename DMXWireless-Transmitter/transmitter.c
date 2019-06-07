@@ -48,13 +48,13 @@ int main() {
 	// boot up and set as transmitter;
 	val[0] = 0x1E; //0b0001 1110 bit 0 = 0/1 transmitter/reciever bit 1 powerup , bit4 if 1 = mask_max_RT = irq not triggered if failed transmit
 	nrf24l01_communicate(W, CONFIG, val, 1);
-	
+	_delay_ms(100);
 	dmx_buffer[0]=255;
 	dmx_buffer[1]=255;
 	dmx_buffer[2]=255;
 
 	int j;
-	uint8_t buffer[32];
+	uint8_t* buffer[32];
 	volatile int buffer_i = 0;
 	while(1) {
 		for (j = 0; j < 512; j++) {
@@ -63,7 +63,7 @@ int main() {
 			buffer[buffer_i+2] = 0X3B;
 			buffer[buffer_i+3] = 0x2E;
 			buffer_i = buffer_i+4;
-			if(buffer_i == 32) {
+			if(buffer_i >= 32) {
 				nrf24l01_transmit(buffer, 32);
 				nrf24l01_reset();
 				buffer_i = 0;

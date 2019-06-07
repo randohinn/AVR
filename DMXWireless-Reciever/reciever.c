@@ -9,14 +9,15 @@ volatile uint8_t* data;
 
 volatile unsigned char dmx_buffer[512];
 
-ISR(INT0_vect) {
-	data = nrf24l01_recieve(32);
-	nrf24l01_reset();
-	/*int i;
-	for(i = 0; i < 32; i++) {
-		dmx_buffer[0] = 255;
-	}*/
-	dmx_buffer[0] = 255;
+ISR(PCINT1_VECT) {
+
+		data = nrf24l01_recieve(32);
+		nrf24l01_reset();
+		/*int i;
+		for(i = 0; i < 32; i++) {
+			dmx_buffer[0] = 255;
+		}*/
+		dmx_buffer[0] = 255;    
 	
 }
 
@@ -30,6 +31,8 @@ void serial_send(char* ar) {
 }
 
 void init_uart() {
+	CLKPR = 128;
+	CLKPR = 0;
 	DDRD |= (1 << PIND1);
 	DDRD &= ~(1 << PIND0);
 	UCSR0B |= (1 << TXEN0) | (1 << RXEN0);   // Turn on the transmission and reception circuitry
@@ -42,9 +45,19 @@ void init_uart() {
 int main()
 {
 	uint8_t val[5];
+	
+	
+	DDRC &= ~(1 << DDC5);
+	
+	PCICR |= (1 << PCIE1);    // set PCIE0 to enable PCMSK0 scan
+    PCMSK0 |= (1 << PCINT13);  // set PCINT0 to trigger an interrupt on state change 
+	
+	sei();
+
+	init_uart();
 
     initialize_nrf24l01();
-    _delay_ms(200);
+    delayms(200);
     //Enable AA	
 	val[0] = 0x01;
 	nrf24l01_communicate(W, EN_AA, val, 1);
@@ -82,17 +95,15 @@ int main()
 	
 	val[0] = 0x1F;
 	nrf24l01_communicate(W, CONFIG, val, 1);
-	_delay_ms(100);	
+	delayms(100);
 	
-	DDRD &= ~(1 << DDD2);
-	DDRC |= (1 << DDC5);
-	EICRA &=  ~(1<<ISC01) | (1<<ISC00);
-	EIMSK |= (1<< INT0);
-	//init_uart();
+		data = nrf24l01_recieve(32);
+		nrf24l01_reset();
 	
-	sei();
 	
     while(1) {
+
+	
 	/*	nrf24l01_transmit(data);
 		nrf24l01_reset();
 		_delay_ms(100);
