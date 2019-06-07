@@ -2,7 +2,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#include <util/delay.h>
 #include "nrf24l01.h"
 volatile uint8_t* data;
 #include <string.h>
@@ -10,22 +9,35 @@ volatile uint8_t* data;
 volatile unsigned char dmx_buffer[512];
 
 ISR(PCINT1_VECT) {
+		dmx_buffer[0] = 255;    
+		PORTC ^= (1 << 4);
+	
 
+if(PINC & (1 << PINC5)){
+        /* LOW to HIGH pin change */
+    }
+    else
+    {
+        /* HIGH to LOW pin change */
+   
 		data = nrf24l01_recieve(32);
 		nrf24l01_reset();
 		/*int i;
 		for(i = 0; i < 32; i++) {
 			dmx_buffer[0] = 255;
 		}*/
-		dmx_buffer[0] = 255;    
-	
+		 char buffer[8 * sizeof (uint8_t) + 1 ];
+			utoa(dmx_buffer[0], buffer, 10);
+			serial_send(buffer);
+			serial_send("\r\n");
+	}
 }
 
 void serial_send(char* ar) {
 	int i;
 	for (i = 0; i < strlen(ar); i++){
 		while (( UCSR0A & (1<<UDRE0))  == 0){};
-		_delay_ms(1);
+		delayms(1);
 		UDR0 = ar[i];
 	}
 }
@@ -48,9 +60,10 @@ int main()
 	
 	
 	DDRC &= ~(1 << DDC5);
+	DDRC |= (1 << DDC4);
 	
 	PCICR |= (1 << PCIE1);    // set PCIE0 to enable PCMSK0 scan
-    PCMSK0 |= (1 << PCINT13);  // set PCINT0 to trigger an interrupt on state change 
+    PCMSK1 |= (1 << PCINT13);  // set PCINT0 to trigger an interrupt on state change 
 	
 	sei();
 
@@ -95,26 +108,23 @@ int main()
 	
 	val[0] = 0x1F;
 	nrf24l01_communicate(W, CONFIG, val, 1);
-	delayms(100);
-	
-		data = nrf24l01_recieve(32);
-		nrf24l01_reset();
-	
-	
-    while(1) {
+	delayms(100);	
+	data = nrf24l01_recieve(32);
+	nrf24l01_reset();
+    
+	while(1) {
 
 	
 	/*	nrf24l01_transmit(data);
 		nrf24l01_reset();
-		_delay_ms(100);
+		_delay_ms(100);*/
 		uint16_t i;
 		for(i = 0; i < 512; i++) {
 			char buffer[8 * sizeof (uint8_t) + 1 ];
 			utoa(dmx_buffer[0], buffer, 10);
 			serial_send(buffer);
-			//_delay_ms(10);
 			serial_send("\r\n");
-		}*/
+		}
     }
 
     return 1;
