@@ -8,28 +8,32 @@ volatile uint8_t* data;
 
 volatile unsigned char dmx_buffer[512];
 
-ISR(PCINT1_VECT) {
-		dmx_buffer[0] = 255;    
-		PORTC ^= (1 << 4);
-	
+ISR(PCINT1_vect) {
 
-if(PINC & (1 << PINC5)){
-        /* LOW to HIGH pin change */
+	if((PINC & (1 << PINC5)) == 1){
     }
     else
     {
         /* HIGH to LOW pin change */
-   
-		data = nrf24l01_recieve(32);
+
+		data = nrf24l01_recieve(30);
 		nrf24l01_reset();
-		/*int i;
-		for(i = 0; i < 32; i++) {
-			dmx_buffer[0] = 255;
-		}*/
-		 char buffer[8 * sizeof (uint8_t) + 1 ];
-			utoa(dmx_buffer[0], buffer, 10);
+		volatile uint8_t at = 0;
+		int ok = 0;
+		while(1) {
+			uint16_t addr = (data[at+1] << 8) | data[at];
+			char buffer[8 * sizeof (uint16_t) + 1 ];
+			utoa(addr, buffer, 10);
 			serial_send(buffer);
 			serial_send("\r\n");
+			at++;
+			at++;
+			at++;
+			if(at >= 30) {
+				break;
+			}
+		}
+		
 	}
 }
 
@@ -65,7 +69,6 @@ int main()
 	PCICR |= (1 << PCIE1);    // set PCIE0 to enable PCMSK0 scan
     PCMSK1 |= (1 << PCINT13);  // set PCINT0 to trigger an interrupt on state change 
 	
-	sei();
 
 	init_uart();
 
@@ -102,29 +105,21 @@ int main()
 	nrf24l01_communicate(W, RX_ADDR_P0, val, 5);	
 	nrf24l01_communicate(W, TX_ADDR, val, 5);	
 	
-	val[0] = 32;
+	val[0] = 30;
 	// Payload width (how many bytes per package) 1-32
 	nrf24l01_communicate(W, RX_PW_P0, val, 1);
 	
 	val[0] = 0x1F;
 	nrf24l01_communicate(W, CONFIG, val, 1);
 	delayms(100);	
-	data = nrf24l01_recieve(32);
+	data = nrf24l01_recieve(30);
 	nrf24l01_reset();
-    
+	sei();
+
 	while(1) {
 
-	
-	/*	nrf24l01_transmit(data);
-		nrf24l01_reset();
-		_delay_ms(100);*/
-		uint16_t i;
-		for(i = 0; i < 512; i++) {
-			char buffer[8 * sizeof (uint8_t) + 1 ];
-			utoa(dmx_buffer[0], buffer, 10);
-			serial_send(buffer);
-			serial_send("\r\n");
-		}
+
+		
     }
 
     return 1;
