@@ -1,5 +1,7 @@
 #define F_CPU 8000000
 #include <avr/io.h>
+#include <stdio.h>
+
 #include <avr/interrupt.h>
 
 #include "nrf24l01.h"
@@ -19,11 +21,12 @@ ISR(PCINT1_vect) {
 		data = nrf24l01_recieve(30);
 		nrf24l01_reset();
 		volatile uint8_t at = 0;
-		int ok = 0;
 		while(1) {
-			uint16_t addr = (data[at+1] << 8) | data[at];
+			uint8_t lower = data[at];
+			uint8_t upper = data[at+1];
+			uint16_t addr = ((uint16_t) upper << 8 ) | lower;
 			char buffer[8 * sizeof (uint16_t) + 1 ];
-			utoa(addr, buffer, 10);
+			sprintf(buffer, "%u", addr);
 			serial_send(buffer);
 			serial_send("\r\n");
 			at++;
@@ -64,16 +67,15 @@ int main()
 	
 	
 	DDRC &= ~(1 << DDC5);
-	DDRC |= (1 << DDC4);
 	
-	PCICR |= (1 << PCIE1);    // set PCIE0 to enable PCMSK0 scan
-    PCMSK1 |= (1 << PCINT13);  // set PCINT0 to trigger an interrupt on state change 
-	
+	PCICR |= (1 << PCIE1);
+    PCMSK1 |= (1 << PCINT13);
 
 	init_uart();
 
     initialize_nrf24l01();
     delayms(200);
+	
     //Enable AA	
 	val[0] = 0x01;
 	nrf24l01_communicate(W, EN_AA, val, 1);
@@ -112,8 +114,10 @@ int main()
 	val[0] = 0x1F;
 	nrf24l01_communicate(W, CONFIG, val, 1);
 	delayms(100);	
+	
 	data = nrf24l01_recieve(30);
 	nrf24l01_reset();
+	
 	sei();
 
 	while(1) {
