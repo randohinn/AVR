@@ -20,33 +20,7 @@ void serial_send(char* ar) {
 }
 
 ISR(PCINT1_vect) {
-
-	if((PINC & 0x20)){
-    
-        /* HIGH to LOW pin change */
-
-		data = nrf24l01_recieve(30);
-		nrf24l01_reset();
-		volatile uint8_t at = 0;
-		while(1) {
-			uint8_t lower =  data[at];
-			uint8_t upper =  data[at+1];
-			uint16_t addr = ((uint16_t) (upper << 8) ) | lower;
-			char buffer[8 * sizeof (uint16_t) + 1 ];
-			if (addr) {
-				sprintf(buffer, "%u", addr);
-				serial_send(buffer);
-				serial_send("\r\n");}
-				at+=3;
-			if(at >= 30) {
-				break;
-			}
-		}
-	} else {
-	  //data = nrf24l01_recieve(30);
-	  nrf24l01_reset();
-	  
-	}
+	PORTC |= (1 << PINC4);
 }
 
 
@@ -69,11 +43,12 @@ int main()
 	
 	
 	DDRC &= ~(1 << DDC5);
-	
+	DDRC |= (1 << DDC4);
+
 	PCICR |= (1 << PCIE1);
     PCMSK1 |= (1 << PCINT13);
 
-	init_uart();
+	//init_uart();
 
     initialize_nrf24l01();
     delayms(200);
@@ -125,8 +100,22 @@ int main()
 	
 
 	while(1) {
-
-
+		if(PINC && (1 << PINC4)) {
+			data = nrf24l01_recieve(30);
+			volatile int at;
+			for(at = 0; at < 30; at++) {
+				uint8_t lower =  data[at];
+				uint8_t upper =  data[at+1];
+				uint16_t addr = ((uint16_t) (upper << 8) ) | lower;
+				if(addr) {
+					dmx_buffer[addr] = data[at+2];
+				}
+				at+= 3;
+			}
+			
+			PORTC &= ~(1 << PINC4);
+			nrf24l01_reset();
+		}
 		
     }
 
