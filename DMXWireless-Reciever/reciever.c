@@ -10,36 +10,6 @@ volatile uint8_t* data;
 
 volatile unsigned char dmx_buffer[512];
 
-ISR(PCINT1_vect) {
-
-	if((PINC & (1 << PINC5)) == 1){
-    }
-    else
-    {
-        /* HIGH to LOW pin change */
-
-		data = nrf24l01_recieve(30);
-		nrf24l01_reset();
-		volatile uint8_t at = 0;
-		while(1) {
-			uint8_t lower = data[at];
-			uint8_t upper = data[at+1];
-			uint16_t addr = ((uint16_t) upper << 8 ) | lower;
-			char buffer[8 * sizeof (uint16_t) + 1 ];
-			sprintf(buffer, "%u", addr);
-			serial_send(buffer);
-			serial_send("\r\n");
-			at++;
-			at++;
-			at++;
-			if(at >= 30) {
-				break;
-			}
-		}
-		
-	}
-}
-
 void serial_send(char* ar) {
 	int i;
 	for (i = 0; i < strlen(ar); i++){
@@ -48,6 +18,38 @@ void serial_send(char* ar) {
 		UDR0 = ar[i];
 	}
 }
+
+ISR(PCINT1_vect) {
+
+	if((PINC & 0x20)){
+    
+        /* HIGH to LOW pin change */
+
+		data = nrf24l01_recieve(30);
+		nrf24l01_reset();
+		volatile uint8_t at = 0;
+		while(1) {
+			uint8_t lower =  data[at];
+			uint8_t upper =  data[at+1];
+			uint16_t addr = ((uint16_t) (upper << 8) ) | lower;
+			char buffer[8 * sizeof (uint16_t) + 1 ];
+			if (addr) {
+				sprintf(buffer, "%u", addr);
+				serial_send(buffer);
+				serial_send("\r\n");}
+				at+=3;
+			if(at >= 30) {
+				break;
+			}
+		}
+	} else {
+	  //data = nrf24l01_recieve(30);
+	  nrf24l01_reset();
+	  
+	}
+}
+
+
 
 void init_uart() {
 	CLKPR = 128;
@@ -110,7 +112,6 @@ int main()
 	val[0] = 30;
 	// Payload width (how many bytes per package) 1-32
 	nrf24l01_communicate(W, RX_PW_P0, val, 1);
-	
 	val[0] = 0x1F;
 	nrf24l01_communicate(W, CONFIG, val, 1);
 	delayms(100);	
@@ -118,7 +119,10 @@ int main()
 	data = nrf24l01_recieve(30);
 	nrf24l01_reset();
 	
+	data = nrf24l01_recieve(30);
+	nrf24l01_reset();
 	sei();
+	
 
 	while(1) {
 

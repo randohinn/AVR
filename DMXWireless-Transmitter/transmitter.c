@@ -54,7 +54,7 @@ int main() {
 	dmx_buffer[2]=255;
 	dmx_buffer[511]=255;
 
-	long int j;
+	uint16_t j;
 	uint8_t* buffer[30];
 	volatile int buffer_i = 0;
 	while(1) {
