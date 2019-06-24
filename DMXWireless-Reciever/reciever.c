@@ -20,8 +20,12 @@ void serial_send(char* ar) {
 }
 
 ISR(PCINT1_vect) {
-	PORTC |= (1 << PINC4);
+	if(! (PINC && (1 << PINC5))) {
+		PORTC |= (1 << PINC4);
+	}
+
 }
+
 
 
 
@@ -100,7 +104,7 @@ int main()
 	
 
 	while(1) {
-		if(PINC && (1 << PINC4)) {
+		/*if(PINC && (1 << PINC4)) {
 			data = nrf24l01_recieve(30);
 			volatile int at;
 			for(at = 0; at < 30; at++) {
@@ -110,12 +114,16 @@ int main()
 				if(addr) {
 					dmx_buffer[addr] = data[at+2];
 				}
-				at+= 3;
+				char buffer[8 * sizeof (uint16_t) + 1 ];
+				sprintf(buffer, "%u", addr);
+				//serial_send(buffer);
+				//serial_send("\r\n");
+				
+				at+=3;
 			}
-			
 			PORTC &= ~(1 << PINC4);
 			nrf24l01_reset();
-		}
+		}*/
 		
     }
 

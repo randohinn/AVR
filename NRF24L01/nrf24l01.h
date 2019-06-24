@@ -8,6 +8,16 @@
 #ifndef NRF24L01_H_
 #define NRF24L01_H_
 
+/*
+ * nrf24l01.h
+ *
+ *  Created on: 19. mai 2019
+ *      Author: rando
+ */
+
+#ifndef NRF24L01_H_
+#define NRF24L01_H_
+
 
 // The register map of this file is derived from maniacbug (2007 Stefan Engelke <mbox@stefanengelke.de>) - https://github.com/maniacbug/RF24/blob/master/nRF24L01.h also licensed under MIT
 
@@ -119,6 +129,33 @@
 #define W 1
 #define R 0
 
+
+/* Taneli magic */
+void delay(uint16_t len){
+  len=len-2;
+  for(;len>0;len--){
+    asm volatile("nop");
+    asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
+  }
+}
+
+void delayms(uint8_t len){
+  len--; 
+	for (;len>0;len--){
+	delay(999);
+  	asm volatile("nop");
+  	asm volatile("nop");
+  	asm volatile("nop");
+  	asm volatile("nop");
+  	asm volatile("nop");
+  	asm volatile("nop");		
+  	asm volatile("nop");		
+	}
+	delay(998);
+}
+
 uint8_t send_recieve_spi_byte(uint8_t data)
 {
 	// Load data into the buffer
@@ -140,20 +177,19 @@ uint8_t* nrf24l01_communicate(uint8_t mode, uint8_t reg, uint8_t* package, uint8
 	
 	static uint8_t ret[32];
 	
-	_delay_us(10);
+	delay(10);
 	PORTB &= ~(1 << PINB2);
-	_delay_us(10);
+	delay(10);	
 	send_recieve_spi_byte(reg);
-	_delay_us(10);
-	
+	delay(10);	
 	int i;
 	for(i = 0; i < byte_count; i++) {
 		if(mode == R && reg != W_TX_PAYLOAD) { // payload is on top level, uses R mode!
 			ret[i] = send_recieve_spi_byte(NOP); // Loeme välja 
-			_delay_us(10);
+			delay(10);		
 		} else {
 			send_recieve_spi_byte(package[i]);
-			_delay_us(10);
+			delay(10);		
 		}
 	}
 	PORTB |= (1 << PINB2);
@@ -161,30 +197,31 @@ uint8_t* nrf24l01_communicate(uint8_t mode, uint8_t reg, uint8_t* package, uint8
 	
 }
 
-void nrf24l01_transmit(uint8_t* payload) {
+void nrf24l01_transmit(uint8_t* payload, uint8_t count) {
 	nrf24l01_communicate(R, FLUSH_TX, payload, 0);
-	nrf24l01_communicate(R, W_TX_PAYLOAD, payload, 1);
-	_delay_ms(10);
+	nrf24l01_communicate(R, W_TX_PAYLOAD, payload, count);
+	delayms(10);
 	PORTB |= (1 << PINB1);
-	_delay_us(20);
+	delay(20);
 	PORTB &= ~(1 << PINB1);
-	_delay_ms(10);
+	delayms(10);
 }
 
 void nrf24l01_reset() {
-	_delay_us(10);
+	delay(10);	
 	PORTB &= ~(1 << PINB2);
-	_delay_us(10);
+	delay(12);	
 	uint8_t val[1];
 	val[0] = 0x70;
 	nrf24l01_communicate(W, STATUS, val, 1);
+	delay(12);
 	PORTB |= (1 << PINB2);
 
 }
 
 uint8_t* nrf24l01_recieve(uint8_t count) {
 	PORTB |= (1 << PINB1);
-	_delay_ms(100);
+	delayms(10);
 	PORTB &= ~(1 << PINB1);
 	uint8_t* ret;
 	ret = nrf24l01_communicate(R, R_RX_PAYLOAD, ret, count);
