@@ -17,7 +17,7 @@ ISR(USART_RX_vect)
     if(strcmp(usart_input_buffer[usart_in_count],'\r')) {
         usart_in_count = 0;
         usart_valid = 1;
-	} else {
+    } else {
         usart_in_count++;
     }
 }
@@ -98,8 +98,8 @@ int main() {
     uint16_t j;
     uint8_t* buffer[30];
     volatile int buffer_i = 0;
-	while(1) {
-		if(usart_valid == 1) {
+    while(1) {
+        if(usart_valid == 1) {
             serial_send(usart_input_buffer);
             usart_valid = 0;
         }
