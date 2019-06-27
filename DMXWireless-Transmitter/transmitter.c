@@ -6,15 +6,15 @@
 #include <string.h>
 
 volatile unsigned char dmx_buffer[512];
-volatile unsigned char usart_input_buffer[20];
+volatile unsigned char usart_input_buffer[10];
 volatile unsigned char usart_in_count = 0;
 volatile int usart_valid = 0;
 
 ISR(USART_RX_vect)
 {
     usart_input_buffer[usart_in_count] = UDR0;
-	
     if(usart_input_buffer[usart_in_count] == '\r') {
+		usart_input_buffer[usart_in_count+1] = '\0';
         usart_in_count = 0;
         usart_valid = 1;
     } else {
@@ -63,7 +63,6 @@ int main() {
 
     initialize_nrf24l01();
     init_uart();
-	
     sei();
     
     _delay_ms(200);
@@ -114,10 +113,10 @@ int main() {
     uint16_t j;
     uint8_t* buffer[30];
     volatile int buffer_i = 0;
-	usart_puts("Teremaailm");
+	usart_puts("Teremaailm\r");
     while(1) {
         if(usart_valid == 1) {
-			usart_puts("valid");
+			usart_puts("valid\r");
             usart_puts(usart_input_buffer);
             usart_valid = 0;
         }
