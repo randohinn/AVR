@@ -6,15 +6,15 @@
 #include <string.h>
 
 volatile unsigned char dmx_buffer[512];
-volatile char usart_input_buffer[8];
-volatile int usart_in_count = 0;
+volatile unsigned char usart_input_buffer[20];
+volatile unsigned char usart_in_count = 0;
 volatile int usart_valid = 0;
 
 ISR(USART_RX_vect)
 {
     usart_input_buffer[usart_in_count] = UDR0;
-
-    if(strcmp(usart_input_buffer[usart_in_count],'\r')) {
+	
+    if(usart_input_buffer[usart_in_count] == '\r') {
         usart_in_count = 0;
         usart_valid = 1;
     } else {
@@ -28,6 +28,22 @@ void serial_send(char* ar) {
         while (( UCSR0A & (1<<UDRE0))  == 0){};
         delayms(1);
         UDR0 = ar[i];
+    }
+}
+
+void usart_putc (char send)
+{
+    // Do nothing for a bit if there is already
+    // data waiting in the hardware to be sent
+    while ((UCSR0A & (1 << UDRE0)) == 0) {};
+    UDR0 = send;
+}
+
+void usart_puts (const char *send)
+{
+    // Cycle through each character individually
+    while (*send) {
+        usart_putc(*send++);
     }
 }
 
@@ -55,7 +71,7 @@ int main() {
     val[0] = 0x01;
     nrf24l01_communicate(W, EN_AA, val, 1);
 	
-	// Setup max retries
+    // Setup max retries
     val[0] = 0x2F;
     nrf24l01_communicate(W,SETUP_RETR, val, 1);
 	
@@ -63,7 +79,7 @@ int main() {
     val[0] = 0x01;
     nrf24l01_communicate(W, EN_RXADDR, val, 1);
 	
-	//Set address as 5 byte
+    //Set address as 5 byte
     val[0] = 0x03;
     nrf24l01_communicate(W, SETUP_AW, val, 1);
 	
@@ -98,23 +114,24 @@ int main() {
     uint16_t j;
     uint8_t* buffer[30];
     volatile int buffer_i = 0;
+	usart_puts("Teremaailm");
     while(1) {
         if(usart_valid == 1) {
-            serial_send(usart_input_buffer);
+			usart_puts("valid");
+            usart_puts(usart_input_buffer);
             usart_valid = 0;
         }
-		/*for (j = 0; j < 512; j++) {
-			buffer[buffer_i] = j;
-			buffer[buffer_i+1] = (j >> 8);
-			buffer[buffer_i+2] = dmx_buffer[j];
-			buffer_i = buffer_i+3;
-			if(buffer_i >= 30) {
-				nrf24l01_transmit(buffer, 30);
-				nrf24l01_reset();
-				buffer_i = 0;
-			}
-			
-		}*/
+        /*for (j = 0; j < 512; j++) {
+            buffer[buffer_i] = j;
+            buffer[buffer_i+1] = (j >> 8);
+            buffer[buffer_i+2] = dmx_buffer[j];
+            buffer_i = buffer_i+3;
+            if(buffer_i >= 30) {
+                nrf24l01_transmit(buffer, 30);
+                nrf24l01_reset();
+                buffer_i = 0;
+            }
+        }*/
     }
     return 1;
 }
