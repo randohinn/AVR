@@ -110,7 +110,7 @@ int main() {
 	
 			int i;
 			uint16_t addr = 0;
-			uint16_t val = 0;
+			uint8_t val = 0;
 			char* s = data[process_index];
 			for(i=0; i < 3; i++) {
 				addr = addr*10+(*(s+i)-'0');

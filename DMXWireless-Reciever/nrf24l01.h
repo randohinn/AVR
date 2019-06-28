@@ -219,7 +219,7 @@ void nrf24l01_reset() {
 
 uint8_t* nrf24l01_recieve(uint8_t count) {
 	PORTB |= (1 << PINB1);
-	delayms(3);
+	delayms(10);
 	PORTB &= ~(1 << PINB1);
 	uint8_t* ret;
 	ret = nrf24l01_communicate(R, R_RX_PAYLOAD, ret, count);

@@ -149,18 +149,17 @@ int main()
 	UCSR0C|=(1<<USBS0); //USBS0 2 Stop bits	
 	sei();//Globale Interrupts Enable
 	UDR0 = 0;//Start DMX	
-	dmx_buffer[0] = 200;
 	while(1) {
 		if(PINC && (1 << PINC4)) {
 			data = nrf24l01_recieve(3);
 			uint8_t lower =  data[0];
 			uint8_t upper =  data[1];
 			uint16_t addr = ((uint16_t) (upper << 8) ) | lower;
-			dmx_buffer[addr] = (unsigned char) data[2];
+			dmx_buffer[addr] = data[2];
 				
-			
 			PORTC &= ~(1 << PINC4);
 			nrf24l01_reset();
+			
 		}
     }
 
