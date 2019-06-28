@@ -190,11 +190,11 @@ uint8_t* nrf24l01_communicate(uint8_t mode, uint8_t reg, uint8_t* package, uint8
 void nrf24l01_transmit(uint8_t* payload, uint8_t count) {
 	nrf24l01_communicate(R, FLUSH_TX, payload, 0);
 	nrf24l01_communicate(R, W_TX_PAYLOAD, payload, count);
-	delayms(10);
+	delayms(1);
 	PORTB |= (1 << PINB1);
 	delay(10);
 	PORTB &= ~(1 << PINB1);
-	delayms(10);
+	delayms(1);
 }
 
 void nrf24l01_reset() {
@@ -211,7 +211,7 @@ void nrf24l01_reset() {
 
 uint8_t* nrf24l01_recieve(uint8_t count) {
 	PORTB |= (1 << PINB1);
-	delayms(10);
+	delayms(20);
 	PORTB &= ~(1 << PINB1);
 	uint8_t* ret;
 	ret = nrf24l01_communicate(R, R_RX_PAYLOAD, ret, count);

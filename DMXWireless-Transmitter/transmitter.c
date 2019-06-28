@@ -6,30 +6,24 @@
 #include <string.h>
 
 volatile unsigned char dmx_buffer[512];
-volatile unsigned char usart_input_buffer[10];
-volatile unsigned char usart_input[10];
 
-volatile unsigned char usart_in_count = 0;
-volatile int usart_valid = 0;
+volatile unsigned char data[2][10];
+volatile int data_index = 0;
+volatile unsigned char data_count = 0;
+
+volatile int data_valid = 0;
 
 ISR(USART_RX_vect)
 {
-    usart_input_buffer[usart_in_count] = UDR0;
-    if(usart_input_buffer[usart_in_count] == '\r') {
-        usart_in_count = 0;
-        usart_valid = 1;
-    } else {
-        usart_in_count++;
-    }
-}
+	data[data_index][data_count] = UDR0;
+	if(data[data_index][data_count] == '\r') {
+		data_count = 0;
+		data_valid = 1;
+		data_index = !data_index;
 
-void serial_send(char* ar) {
-    int i;
-	for (i = 0; i < strlen(ar); i++){
-        while (( UCSR0A & (1<<UDRE0))  == 0){};
-        delayms(1);
-        UDR0 = ar[i];
-    }
+	} else {
+		data_count++;
+	}
 }
 
 void usart_putc (char send)
@@ -56,7 +50,7 @@ void init_uart() {
     UCSR0B |= (1 << TXEN0) | (1 << RXEN0) | (1 << RXCIE0);   // Turn on the transmission and reception circuitry
     UCSR0C |= (1 << UCSZ00) | (1 << UCSZ01); // Use 8-bit character sizes
     UBRR0H = 0;
-    UBRR0L=54;
+    UBRR0L=51;
 }
 
 int main() {
@@ -107,21 +101,28 @@ int main() {
     val[0] = 0x1E; //0b0001 1110 bit 0 = 0/1 transmitter/reciever bit 1 powerup , bit4 if 1 = mask_max_RT = irq not triggered if failed transmit
     nrf24l01_communicate(W, CONFIG, val, 1);
     _delay_ms(100);
-    dmx_buffer[0]=255;
-    dmx_buffer[1]=255;
-    dmx_buffer[2]=255;
-    dmx_buffer[511]=255;
     uint16_t j;
     uint8_t* buffer[30];
     volatile int buffer_i = 0;
-	usart_puts("Teremaailm\r\n");
     while(1) {
-        if(usart_valid) {
-			usart_puts("valid\r\n");
-            usart_puts(usart_input_buffer);
-            usart_valid = 0;
+        if(data_valid) {
+			int process_index = !data_index;
+	
+			int i;
+			uint16_t addr = 0;
+			uint16_t val = 0;
+			char* s = data[process_index];
+			for(i=0; i < 3; i++) {
+				addr = addr*10+(*(s+i)-'0');
+			} 
+			for(i=4; i < 7; i++) {
+				val = val*10+(*(s+i)-'0');
+			} 
+			dmx_buffer[addr] = val;
+			data_valid = 0;
         }
-        /*for (j = 0; j < 512; j++) {
+		
+        for (j = 0; j < 512; j++) {
             buffer[buffer_i] = j;
             buffer[buffer_i+1] = (j >> 8);
             buffer[buffer_i+2] = dmx_buffer[j];
@@ -131,7 +132,7 @@ int main() {
                 nrf24l01_reset();
                 buffer_i = 0;
             }
-        }*/
+        }
     }
     return 1;
 }

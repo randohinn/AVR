@@ -128,6 +128,14 @@ void delay(uint16_t len){
     asm volatile("nop");
 	asm volatile("nop");
 	asm volatile("nop");
+    asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
+	asm volatile("nop");
   }
 }
 
@@ -211,7 +219,7 @@ void nrf24l01_reset() {
 
 uint8_t* nrf24l01_recieve(uint8_t count) {
 	PORTB |= (1 << PINB1);
-	delayms(10);
+	delayms(3);
 	PORTB &= ~(1 << PINB1);
 	uint8_t* ret;
 	ret = nrf24l01_communicate(R, R_RX_PAYLOAD, ret, count);

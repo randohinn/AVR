@@ -1,12 +1,17 @@
-#define F_CPU 8000000
+#define F_CPU 20000000
 #include <avr/io.h>
 #include <stdio.h>
+#include <util/delay.h>
+
 
 #include <avr/interrupt.h>
 
 #include "nrf24l01.h"
 volatile uint8_t* data;
 #include <string.h>
+
+#define DMX_BAUD 250000UL
+#define DMX_BAUD_BREAK 80000UL
 
 volatile unsigned char dmx_buffer[512];
 
@@ -26,6 +31,43 @@ ISR(PCINT1_vect) {
 
 }
 
+static unsigned int  dmx_channel_tx_count = 0;
+static unsigned char dmx_tx_state = 0;
+//############################################################################
+//DMX Senderoutine
+ISR (USART_TX_vect)
+//############################################################################
+{
+	
+	
+	switch (dmx_tx_state)
+	{
+		case (0):
+			UBRR0   = (F_CPU / (DMX_BAUD_BREAK * 16L) - 1);
+			UDR0 = 0; //RESET Frame
+			dmx_tx_state = 1;
+			break;
+
+		case (1):
+			UBRR0   = (F_CPU / (DMX_BAUD * 16L) - 1);
+			UDR0 = 0; //Start Byte
+			dmx_tx_state = 2;
+			break;
+
+		case (2):
+			_delay_us(10);
+			//Ausgabe des Zeichens
+			UDR0 = dmx_buffer[dmx_channel_tx_count];
+			dmx_channel_tx_count++;
+			
+			if(dmx_channel_tx_count == 512)
+			{
+				dmx_channel_tx_count = 0;
+				dmx_tx_state = 0;
+			}
+			break;
+	}
+}
 
 
 
@@ -100,31 +142,28 @@ int main()
 	
 	data = nrf24l01_recieve(30);
 	nrf24l01_reset();
-	sei();
-	
-
+//Init usart DMX-BUS
+	UBRR0   = (F_CPU / (DMX_BAUD * 16L) - 1);
+	DDRD |= (1<<PIND1); //Output TXD Pin ATmega88
+	UCSR0B|=(1<<TXEN0)|(1<<TXCIE0); // TXEN0 Transmitter enable / TXCIE0 TX complete interrupt enable 
+	UCSR0C|=(1<<USBS0); //USBS0 2 Stop bits	
+	sei();//Globale Interrupts Enable
+	UDR0 = 0;//Start DMX	
 	while(1) {
-		/*if(PINC && (1 << PINC4)) {
+		if(PINC && (1 << PINC4)) {
 			data = nrf24l01_recieve(30);
 			volatile int at;
 			for(at = 0; at < 30; at++) {
 				uint8_t lower =  data[at];
 				uint8_t upper =  data[at+1];
 				uint16_t addr = ((uint16_t) (upper << 8) ) | lower;
-				if(addr) {
-					dmx_buffer[addr] = data[at+2];
-				}
-				char buffer[8 * sizeof (uint16_t) + 1 ];
-				sprintf(buffer, "%u", addr);
-				//serial_send(buffer);
-				//serial_send("\r\n");
+				dmx_buffer[addr] = (unsigned char) data[at+2];
 				
 				at+=3;
 			}
 			PORTC &= ~(1 << PINC4);
 			nrf24l01_reset();
-		}*/
-		
+		}
     }
 
     return 1;
