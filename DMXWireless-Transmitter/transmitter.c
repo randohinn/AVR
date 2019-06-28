@@ -94,7 +94,7 @@ int main() {
     nrf24l01_communicate(W, TX_ADDR, val, 5);	
 	
     // Payload width (how many bytes per package) 1-32
-    val[0] = 30;
+    val[0] = 3;
     nrf24l01_communicate(W, RX_PW_P0, val, 1);
     
     // boot up and set as transmitter;
@@ -102,7 +102,7 @@ int main() {
     nrf24l01_communicate(W, CONFIG, val, 1);
     _delay_ms(100);
     uint16_t j;
-    uint8_t* buffer[30];
+    uint8_t* buffer[3];
     volatile int buffer_i = 0;
     while(1) {
         if(data_valid) {
@@ -119,10 +119,17 @@ int main() {
 				val = val*10+(*(s+i)-'0');
 			} 
 			dmx_buffer[addr] = val;
+			
+			buffer[0] = addr;
+            buffer[1] = (addr >> 8);
+            buffer[2] = val;
+			nrf24l01_transmit(buffer, 3);
+            nrf24l01_reset();
+            buffer_i = 0;
 			data_valid = 0;
         }
 		
-        for (j = 0; j < 512; j++) {
+       /* for (j = 0; j < 512; j++) {
             buffer[buffer_i] = j;
             buffer[buffer_i+1] = (j >> 8);
             buffer[buffer_i+2] = dmx_buffer[j];
@@ -132,7 +139,7 @@ int main() {
                 nrf24l01_reset();
                 buffer_i = 0;
             }
-        }
+        }*/
     }
     return 1;
 }

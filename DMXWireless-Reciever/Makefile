@@ -244,4 +244,4 @@ writefuse:
 	avrdude -p $(AVRDUDEMCU) -U lfuse:w:0xc3:m
 
 program:
-	avrdude -c usbtiny -p $(AVRDUDEMCU) -U flash:w:$(TARGET).hex -U lfuse:w:0xff:m	-U hfuse:w:0xDE:m
+	avrdude -c usbtiny -p $(AVRDUDEMCU) -U flash:w:$(TARGET).hex -U lfuse:w:0xFF:m -U hfuse:w:0xDE:m

@@ -55,7 +55,7 @@ ISR (USART_TX_vect)
 			break;
 
 		case (2):
-			_delay_us(10);
+			delay(10);
 			//Ausgabe des Zeichens
 			UDR0 = dmx_buffer[dmx_channel_tx_count];
 			dmx_channel_tx_count++;
@@ -130,17 +130,17 @@ int main()
 	nrf24l01_communicate(W, RX_ADDR_P0, val, 5);	
 	nrf24l01_communicate(W, TX_ADDR, val, 5);	
 	
-	val[0] = 30;
+	val[0] = 3;
 	// Payload width (how many bytes per package) 1-32
 	nrf24l01_communicate(W, RX_PW_P0, val, 1);
 	val[0] = 0x1F;
 	nrf24l01_communicate(W, CONFIG, val, 1);
 	delayms(100);	
 	
-	data = nrf24l01_recieve(30);
+	data = nrf24l01_recieve(3);
 	nrf24l01_reset();
 	
-	data = nrf24l01_recieve(30);
+	data = nrf24l01_recieve(3);
 	nrf24l01_reset();
 //Init usart DMX-BUS
 	UBRR0   = (F_CPU / (DMX_BAUD * 16L) - 1);
@@ -149,18 +149,16 @@ int main()
 	UCSR0C|=(1<<USBS0); //USBS0 2 Stop bits	
 	sei();//Globale Interrupts Enable
 	UDR0 = 0;//Start DMX	
+	dmx_buffer[0] = 200;
 	while(1) {
 		if(PINC && (1 << PINC4)) {
-			data = nrf24l01_recieve(30);
-			volatile int at;
-			for(at = 0; at < 30; at++) {
-				uint8_t lower =  data[at];
-				uint8_t upper =  data[at+1];
-				uint16_t addr = ((uint16_t) (upper << 8) ) | lower;
-				dmx_buffer[addr] = (unsigned char) data[at+2];
+			data = nrf24l01_recieve(3);
+			uint8_t lower =  data[0];
+			uint8_t upper =  data[1];
+			uint16_t addr = ((uint16_t) (upper << 8) ) | lower;
+			dmx_buffer[addr] = (unsigned char) data[2];
 				
-				at+=3;
-			}
+			
 			PORTC &= ~(1 << PINC4);
 			nrf24l01_reset();
 		}
