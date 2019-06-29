@@ -102,7 +102,7 @@ int main() {
     nrf24l01_communicate(W, CONFIG, val, 1);
     _delay_ms(100);
     uint16_t j;
-    uint8_t* buffer[3];
+    uint8_t buffer[3];
     volatile int buffer_i = 0;
     while(1) {
         if(data_valid) {
@@ -119,6 +119,7 @@ int main() {
 				val = val*10+(*(s+i)-'0');
 			} 
 			dmx_buffer[addr] = val;
+			
 			
 			buffer[0] = addr;
             buffer[1] = (addr >> 8);

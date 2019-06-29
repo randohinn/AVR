@@ -192,7 +192,7 @@ void nrf24l01_transmit(uint8_t* payload, uint8_t count) {
 	nrf24l01_communicate(R, W_TX_PAYLOAD, payload, count);
 	delayms(1);
 	PORTB |= (1 << PINB1);
-	delayms(2);
+	delayms(1);
 	PORTB &= ~(1 << PINB1);
 	delayms(1);
 }

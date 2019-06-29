@@ -219,7 +219,7 @@ void nrf24l01_reset() {
 
 uint8_t* nrf24l01_recieve(uint8_t count) {
 	PORTB |= (1 << PINB1);
-	delayms(10); // DMX Stops during this line.... Need to get rid of this delay
+	delay(1); // DMX Stops during this line.... Need to get rid of this delay
 	PORTB &= ~(1 << PINB1);
 	uint8_t* ret;
 	ret = nrf24l01_communicate(R, R_RX_PAYLOAD, ret, count);
