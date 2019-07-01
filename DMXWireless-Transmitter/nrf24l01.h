@@ -120,7 +120,6 @@
 #define R 0
 
 
-/* Taneli magic */
 void delay(uint16_t len){
   len=len-2;
   for(;len>0;len--){
